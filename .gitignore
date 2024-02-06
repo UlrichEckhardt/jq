@@ -56,3 +56,11 @@ cscope.in.out
 cscope.out
 cscope.po.out
 jq.dSYM
+
+# Bazel directories
+bazel-bin
+bazel-jq
+bazel-out
+bazel-testlogs
+
+
