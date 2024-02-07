@@ -64,4 +64,6 @@ bazel-jq
 bazel-out
 bazel-testlogs
 
+# VS Code IDE config dir
+.vscode
 
