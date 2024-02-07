@@ -1,0 +1,8 @@
+# Enable Bzlmod for every Bazel command
+# This is only required by Bazel <7.0, so that it uses MODULE.bazel
+# as repository root marker file.
+# See also:
+# - https://github.com/bazelbuild/bazel/issues/18958
+# - https://bazel.build/external/migration
+common --enable_bzlmod
+
