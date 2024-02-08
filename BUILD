@@ -35,7 +35,25 @@ genrule(
     cmd_bash = "echo '#define JQ_CONFIG \"(unknown)\"' > $@",
 )
 
-# TODO: generate "src/builtin.inc"
+genrule(
+    name = "builtins_header",
+    srcs = [
+        "src/builtin.jq"
+    ],
+    outs = [
+        "src/builtin.inc"
+    ],
+    cmd_bash = """
+        cat src/builtin.jq \\
+        | od -v -A n -t o1 \\
+        | sed -e 's/$$/ /' \\
+            -e 's/\\([0123456789]\\) /\\1, /g' \\
+            -e 's/ $$//' \\
+            -e 's/ 0/  0/g' \\
+            -e 's/ \\([123456789]\\)/ 0\\1/g' \\
+        > $@
+    """,
+)
 
 cc_library(
     name = "jqlib",
@@ -44,6 +62,9 @@ cc_library(
         ["src/*.c", "src/*.h", "src/*.inc"],
         ["src/main.c", "src/version.h", "src/config_opts.inc"]
     ),
+    hdrs =[
+        "src/builtin.inc",
+    ],
     defines = [
         "_GNU_SOURCE",
         "IEEE_8087",
