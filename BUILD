@@ -23,7 +23,19 @@ genrule(
     ],
 )
 
-# TODO: generate "src/config_opts.inc", "src/builtin.inc"
+# TODO: Implement this meaningfully.
+# With autotools, `config.status --config` gives you the flags given
+# to `configure`.
+genrule(
+    name = "config_opts_header",
+    srcs = [],
+    outs = [
+        "src/config_opts.inc"
+    ],
+    cmd_bash = "echo '#define JQ_CONFIG \"(unknown)\"' > $@",
+)
+
+# TODO: generate "src/builtin.inc"
 
 cc_library(
     name = "jqlib",
