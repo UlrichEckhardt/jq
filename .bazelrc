@@ -6,3 +6,6 @@
 # - https://bazel.build/external/migration
 common --enable_bzlmod
 
+build --verbose_failures
+build --subcommands=pretty_print
+
