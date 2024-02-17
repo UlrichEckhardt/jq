@@ -1,4 +1,19 @@
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+load("@bazel_skylib//rules:common_settings.bzl", "bool_flag")
+
+# build flag whether to use the internal decnum lib or not
+bool_flag(
+    name = "enable_decnum",
+    build_setting_default = False,
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
+    name = "decnum_enabled",
+    flag_values = {
+        ":enable_decnum": "true",
+    },
+)
 
 
 # TODO: Implement this meaningfully.
@@ -52,7 +67,10 @@ genrule(
 
 cc_library(
     name = "jqlib",
-    deps = [],
+    deps = select({
+        ":decnum_enabled": ["//vendor/decNumber:decnum"],
+        "//conditions:default": [],
+    }),
     srcs = glob(
         ["src/*.c", "src/*.h"],
         ["src/main.c", "src/config.h"]
@@ -63,7 +81,10 @@ cc_library(
     defines = [
         "_GNU_SOURCE",
         "IEEE_8087",
-    ],
+    ] + select({
+        ":decnum_enabled": ["USE_DECNUM"],
+        "//conditions:default": [],
+    }),
 )
 
 cc_binary(
