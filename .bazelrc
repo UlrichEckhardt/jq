@@ -9,3 +9,5 @@ common --enable_bzlmod
 build --verbose_failures
 build --subcommands=pretty_print
 
+# alias for build flag to enable the internal decnum library
+build --flag_alias=enable_decnum=//:enable_decnum
