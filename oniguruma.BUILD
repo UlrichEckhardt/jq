@@ -28,3 +28,100 @@ cc_library(
     includes = ["src/"],
     visibility = ["//visibility:public"],
 )
+
+cc_test(
+    name = "test_back",
+    deps = [
+        ":libonig",
+    ],
+    srcs = [
+        "test/test_back.c",
+    ],
+)
+
+cc_test(
+    name = "test_options",
+    deps = [
+        ":libonig",
+    ],
+    srcs = [
+        "test/test_options.c",
+    ],
+)
+
+cc_test(
+    name = "test_regset",
+    deps = [
+        ":libonig",
+    ],
+    srcs = [
+        "test/test_regset.c",
+    ],
+)
+
+cc_test(
+    name = "test_syntax",
+    deps = [
+        ":libonig",
+    ],
+    srcs = [
+        "test/test_syntax.c",
+    ],
+)
+
+cc_test(
+    name = "test_utf8",
+    deps = [
+        ":libonig",
+    ],
+    srcs = [
+        "test/test_utf8.c",
+    ],
+)
+
+cc_test(
+    name = "testc",
+    deps = [
+        ":libonig",
+    ],
+    srcs = [
+        "test/testc.c",
+    ],
+)
+
+cc_test(
+    name = "testp",
+    deps = [
+        ":libonig",
+    ],
+    srcs = [
+        "test/testp.c",
+    ],
+)
+
+cc_test(
+    name = "testu",
+    deps = [
+        ":libonig",
+    ],
+    srcs = [
+        "test/testu.c",
+    ],
+)
+
+test_suite(
+    name = "all_tests",
+    tests = [
+        ":test_back",
+        ":test_options",
+        ":test_regset",
+        ":test_syntax",
+        ":test_utf8",
+        ":testc",
+        # TODO: Find out if this is supposed to work.
+        # This may require that the POSIX option is enabled for the
+        # library. Maybe updating Oniguruma would also do the job.
+        # ":testp",
+        ":testu",
+    ],
+)
