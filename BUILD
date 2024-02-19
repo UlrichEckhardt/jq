@@ -8,6 +8,13 @@ bool_flag(
     visibility = ["//visibility:public"],
 )
 
+# build flag whether to use the Oniguruma library
+bool_flag(
+    name = "enable_oniguruma",
+    build_setting_default = False,
+    visibility = ["//visibility:public"],
+)
+
 config_setting(
     name = "decnum_enabled",
     flag_values = {
@@ -15,6 +22,12 @@ config_setting(
     },
 )
 
+config_setting(
+    name = "oniguruma_enabled",
+    flag_values = {
+        ":enable_oniguruma": "true",
+    },
+)
 
 # TODO: Implement this meaningfully.
 # With autotools, `config.status --config` gives you the flags given
@@ -70,6 +83,9 @@ cc_library(
     deps = select({
         ":decnum_enabled": ["//vendor/decNumber:decnum"],
         "//conditions:default": [],
+    }) + select({
+        ":oniguruma_enabled": ["@oniguruma//:libonig"],
+        "//conditions:default": [],
     }),
     srcs = glob(
         ["src/*.c", "src/*.h"],
@@ -83,6 +99,9 @@ cc_library(
         "IEEE_8087",
     ] + select({
         ":decnum_enabled": ["USE_DECNUM"],
+        "//conditions:default": [],
+    }) + select({
+        ":oniguruma_enabled": ["HAVE_LIBONIG"],
         "//conditions:default": [],
     }),
 )
