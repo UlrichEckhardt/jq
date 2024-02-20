@@ -25,6 +25,9 @@ cc_library(
     ] + glob(
         ["src/unicode_*_data*.c"]
     ),
+    defines = [
+        "USE_POSIX_API",
+    ],
     includes = ["src/"],
     visibility = ["//visibility:public"],
 )
@@ -118,10 +121,7 @@ test_suite(
         ":test_syntax",
         ":test_utf8",
         ":testc",
-        # TODO: Find out if this is supposed to work.
-        # This may require that the POSIX option is enabled for the
-        # library. Maybe updating Oniguruma would also do the job.
-        # ":testp",
+        ":testp",
         ":testu",
     ],
 )
