@@ -11,3 +11,6 @@ build --subcommands=pretty_print
 
 # alias for build flag to enable the internal decnum library
 build --flag_alias=enable_decnum=//:enable_decnum
+
+# alias for build flag to enable the Oniguruma library
+build --flag_alias=enable_oniguruma=//:enable_oniguruma
