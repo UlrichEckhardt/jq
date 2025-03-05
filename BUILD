@@ -1,7 +1,32 @@
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
 
 
-# TODO: generate "src/config.h"
+# TODO: Implement this meaningfully.
+# With autotools, `config.status --config` gives you the flags given
+# to `configure`. This should at least reflect flags given to bazel.
+genrule(
+    name = "config_header",
+    srcs = [],
+    outs = [
+        "src/config.h"
+    ],
+    cmd_bash = """
+    (
+        echo '#define JQ_CONFIG \"(unknown)\"'
+        VERSION=$$(scripts/version)
+        echo -n '#define JQ_VERSION "'
+        echo -n "$$VERSION"
+        echo '"'
+    ) > $@
+    """,
+    # Note: This target depends on the whole Git repository here,
+    # which is why it needs to be executed locally and outside of
+    # any sandbox.
+    local = True,
+    tools = [
+        "scripts/version"
+    ],
+)
 
 
 genrule(
@@ -38,13 +63,12 @@ cc_library(
     defines = [
         "_GNU_SOURCE",
         "IEEE_8087",
-        'JQ_VERSION=\\"unknown\\"',
-        'JQ_CONFIG=\\"(unknown)\\"',
     ],
 )
 
 cc_binary(
     name = "jq",
+    copts = ["--include", "$(location src/config.h)"],
     deps = [
         ":jqlib",
     ],
